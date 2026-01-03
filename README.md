@@ -26,7 +26,7 @@ Thanks to [openevolve](https://github.com/algorithmicsuperintelligence/openevolv
 
 As I could run the examples on both openevolve and my code, I though it'd be fun to compare. So I did a completely unscientific comparison. The two systems are using different prompts and models (Sonnet-4 vs an ensemble of Gemini-2.5-flash and Gemini-2.5-flash-lite). 
 
-After cloning openevolve, I ran it with a command like the following: 
+After cloning openevolve (SHA a7428efeb5a30b7968975f182d5fb7060b36e978), I ran it with a command like the following: 
 
 `OPENAI_API_KEY=<your-openai-compatible-key> python openevolve-run.py examples/circle_packing_with_artifacts/initial_program.py examples/circle_packing_with_artifacts/evaluator.py --config examples/circle_packing_with_artifacts/config_phase_1.yaml --iterations 100`
 
@@ -41,6 +41,8 @@ The result looked this like:
 ![Optimization Metrics Comparison Circle Packing](examples/circle_packing_with_artifacts/metrics_plot.png)
 
 "Main" refers to this repo. Code optimization didn't hit the maximum 100 iterations because it came close to the sum_radii target of 2.635. The agent decided that this was good enough.
+
+**Update (1/3/2026):** Since I did the experiments, Asankhya Sharma, the maintainer of openevolve, [shared](https://www.linkedin.com/feed/update/urn:li:activity:7408962852990029824?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7408962852990029824%2C7409302872061837313%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287409302872061837313%2Curn%3Ali%3Aactivity%3A7408962852990029824%29) that the current circle packing example was built to replicate the AlphaEvolve and was done when OpenEvolve itself was in active development. A newly added [config](https://github.com/algorithmicsuperintelligence/openevolve/blob/main/examples/circle_packing_with_artifacts/config.yaml) does much better. 
 
 The result for function_minimination, which I ran for 25 iteraions, was:
 
