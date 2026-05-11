@@ -4,6 +4,8 @@ __pycache__/
 
 # code output logs
 optimization_output_*/
+.history/
+my_notes.txt
 
 # Mac
 .DS_Store

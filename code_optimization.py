@@ -156,10 +156,17 @@ that returns metrics including 'combined_score'.
     )
     
     parser.add_argument(
-        '--iterations',
+        '--phase-1-iterations',
         type=int,
         required=True,
-        help='Number of optimization iterations to run'
+        help='Number of iterations for Phase 1 (analysis)'
+    )
+
+    parser.add_argument(
+        '--phase-2-iterations',
+        type=int,
+        required=True,
+        help='Number of iterations for Phase 2 (researcher/supervisor)'
     )
     
     parser.add_argument(
@@ -278,8 +285,9 @@ def main():
         orchestrator = OptimizationOrchestrator(
             initial_program_path=args.initial_program,
             evaluator_path=args.evaluator,
-            num_iterations=args.iterations,
-            output_dir=output_dir
+            output_dir=output_dir,
+            phase_1_iterations=args.phase_1_iterations,
+            phase_2_iterations=args.phase_2_iterations,
         )
 
         logger.info("Starting optimization process...")

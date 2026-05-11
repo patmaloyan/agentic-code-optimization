@@ -118,7 +118,7 @@ class StreamingConversationLogger:
     def _initialize_log(self):
         """Create the log file and write the header."""
         try:
-            with open(self.log_path, 'w') as f:
+            with open(self.log_path, 'w', encoding='utf-8') as f:
                 f.write(f"╔{'═' * 78}╗\n")
                 f.write(f"║ STREAMING CONVERSATION LOG{' ' * 51}║\n")
                 f.write(f"╚{'═' * 78}╝\n\n")
@@ -134,7 +134,7 @@ class StreamingConversationLogger:
             text: Text to append.
         """
         try:
-            with open(self.log_path, 'a') as f:
+            with open(self.log_path, 'a', encoding='utf-8') as f:
                 f.write(text)
                 f.flush()  # Ensure immediate write
         except IOError as e:

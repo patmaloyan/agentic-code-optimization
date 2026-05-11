@@ -48,7 +48,7 @@ def main():
     import time
     
     # Test with different array sizes
-    test_sizes = [50, 100, 200, 500]
+    test_sizes = [100, 500, 2000, 5000]
     total_time = 0
     
     for size in test_sizes:

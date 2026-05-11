@@ -51,6 +51,19 @@ def read_file(file_path: str) -> str:
         logger.debug("Successfully read %d characters from %s", len(content), file_path)
         return content
     except FileNotFoundError:
+        # Attempt a common fallback: if caller asked for `evaluation.py`, try `evaluator.py`.
+        try:
+            alt = Path(file_path)
+            if alt.name == "evaluation.py":
+                alt = alt.with_name("evaluator.py")
+                if alt.exists():
+                    with open(alt, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    logger.info("Fallback: read %s instead of missing %s", str(alt), file_path)
+                    return content
+        except Exception:
+            logger.debug("Fallback attempt for %s failed", file_path, exc_info=True)
+
         logger.warning("File not found: %s", file_path)
         return f"Error: File not found: {file_path}"
     except IOError as e:
@@ -323,12 +336,22 @@ def evaluate_program(
             return f"Error: Program file not found: {program_path}"
 
         # Check if evaluation file exists
-        if not Path(evaluation_file).exists():
-            return f"Error: Evaluation file not found: {evaluation_file}"
+        eval_path = Path(evaluation_file)
+        if not eval_path.exists():
+            # Common typo in agent prompts: look for evaluator.py in same dir
+            if eval_path.name == "evaluation.py":
+                alt = eval_path.with_name("evaluator.py")
+                if alt.exists():
+                    logger.info("Using fallback evaluator: %s (found for %s)", str(alt), evaluation_file)
+                    eval_path = alt
+                else:
+                    return f"Error: Evaluation file not found: {evaluation_file}"
+            else:
+                return f"Error: Evaluation file not found: {evaluation_file}"
 
         # Initialize or reinitialize evaluator if needed
         config = EvaluatorConfig(timeout=timeout, max_retries=1)
-        _evaluator = Evaluator(config=config, evaluation_file=evaluation_file)
+        _evaluator = Evaluator(config=config, evaluation_file=str(eval_path))
 
         logger.info("Starting evaluation of %s", program_path)
 
